@@ -1,0 +1,569 @@
+---
+title: "Midterm 260 project"
+author: "Apurv Srivastav"
+date: "4/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(haven)
+cdc.data1<-read_sas("c1.sas7bdat")
+#str(cdc.data1)
+```
+
+```{r}
+cdc.data2<-read_sas("c2.sas7bdat")
+#str(cdc.data2)
+```
+
+```{r}
+cdc.data3<-read_sas("c3.sas7bdat")
+#str(cdc.data3)
+```
+
+```{r}
+cdc.data<-rbind(cdc.data1,cdc.data2, cdc.data3)
+cdc.data<-na.omit(cdc.data)
+str(cdc.data)
+```
+
+```{r}
+#head(cdc.data)
+```
+
+
+```{r}
+cdc_sub<-cdc.data[,c(33,43,45:58)]
+cdc_subset<-cdc_sub[which(cdc_sub[,14]>=0),]
+str(cdc_subset)
+attach(cdc_subset)
+```
+
+```{r}
+table(as.factor(age_cat))
+table(as.factor(symsob))
+table(as.factor(Sex_n))
+table(as.factor(race))
+table(as.factor(state))
+table(as.factor(status))
+table(as.factor(death))
+table(CDC_report_delay)
+table(as.factor(sym_any))
+table(as.factor(medcond))
+table(as.factor(abxchest))
+table(as.factor(mechvent))
+table(as.factor(icu))
+table(as.factor(pna))
+table(as.factor(acuterespdistress))
+
+
+
+
+
+```
+
+```{r}
+library(ggplot2)
+ggplot(cdc_subset, aes(x = age_cat, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("age categories") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))
+ggplot(cdc_subset, aes(x = symsob, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("shortness of breath") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = Sex_n, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Sex") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = abxchest, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("ab/chest pain") +
+  ylab("Observations") +
+  guides(fill = FALSE) +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = acuterespdistress, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Acute Respiratory Distress") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = icu, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("ICU") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = mechvent, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Ventilator") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = medcond, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Prior Medical Conditions") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = pna, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Pnuemonia") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = race, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Race") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = state, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Region") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = status, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Status") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = sym_any, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Any Symptoms") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+ggplot(cdc_subset, aes(x = sym, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=FALSE)) +
+  xlab("Number of Symptoms") +
+  ylab("Observations") +
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Green","Blue"))+
+  stat_count(aes(label = ..count..), geom = "text")
+```
+
+
+
+### Negative binomial model
+```{r}
+library(foreign)
+library(ggplot2)
+library(MASS)
+```
+
+
+```{r}
+#with(cdc_subset, death, symsob, function(x){sprintf("M(SD)=%1.2f (%1.2f)",mean(x),sd(x))})
+```
+
+###Test to see if variabes created 
+```{r}
+library(gmodels)
+tabage<-CrossTable(death,age_cat, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabsob<-CrossTable(death,symsob, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabsex<-CrossTable(death,Sex_n, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabrace<-CrossTable(death,race, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabreg<-CrossTable(death,state, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabstatus<-CrossTable(death,status, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tababxchest<-CrossTable(death,abxchest, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabard<-CrossTable(death,acuterespdistress, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabicu<-CrossTable(death,icu, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabmv<-CrossTable(death,mechvent, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabmc<-CrossTable(death,medcond, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabpna<-CrossTable(death,pna, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,
+resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+tabsymany<-CrossTable(death,sym_any, expected=FALSE, prop.r=FALSE, prop.c=FALSE, prop.t=FALSE, prop.chisq=FALSE, chisq = TRUE, fisher=FALSE, mcnemar=FALSE,resid=FALSE, sresid=FALSE, asresid=FALSE, missing.include=FALSE)
+```
+
+### comparing sym and sym_any
+```{r}
+msym<-glm.nb(death~age_cat+symsob+Sex_n+race+status+state+abxchest+acuterespdistress+icu+mechvent+medcond+pna+sym+CDC_report_delay,data=cdc_subset)
+#summary(msym)
+msymany<-glm.nb(death~age_cat+symsob+Sex_n+race+status++state+abxchest+acuterespdistress+icu+mechvent+medcond+pna+sym_any+CDC_report_delay,data=cdc_subset)
+#summary(msymany)
+```
+
+```{r}
+summary(msym)
+
+```
+
+
+#### chose sym over sym_ _anysince AIC value for msym smaller than that of msym
+
+### Final Model
+```{r}
+mfinal<-msymany
+summ.mfinal<-summary(mfinal)
+summ.mfinal
+#summ.mfinal$coefficients
+#summ.mfinal$null.deviance
+#summ.mfinal$twologlik
+```
+
+### COmpare with Poisson Model
+
+```{r}
+library(lmtest)
+mpoisson<-glm(death~age_cat+symsob+Sex_n+race+state+status+abxchest+acuterespdistress+icu+mechvent+medcond+pna+sym_any+CDC_report_delay, family = "poisson", data = cdc_subset)
+summ.mpoisson<-summary(mpoisson)
+summ.mpoisson
+#summ.mpoisson$coefficients
+#summ.mpoisson$null.deviance
+#2*logLik(mpoisson)
+```
+
+```{r}
+library(memisc)
+library(writexl)
+summtable<-mtable(mpoisson,mfinal, summary.stats =  c("Log-likelihood", "AIC", "BIC", "N","Deviance"))
+relabel(summtable,"\\emph{Intercept}"="<em>Intercept</em>",fixed=TRUE)
+summmnbcoef<-data.frame(summ.mfinal$coefficients)
+
+
+#write_xlsx(summmnbcoef,"C:\\Users\\ssrivas\\Desktop\\Apurv\\UC Davis\\UC Davis Courses\\Spring Quarter 2021\\STA 260\\Midterm Project\\cleaned SAS data\\summtable.xlsx")
+
+
+```
+
+
+
+
+```{r}
+
+#as.numeric(-2 * (logLik(mfinal) - logLik(mpoisson)))
+
+#pchisq(-2 * (logLik(mfinal) - logLik(mpoisson)), df = 1, lower.tail = FALSE)
+
+test<-lrtest(mpoisson,mfinal)
+
+LRT<-data.frame(test)
+x<-data.frame(c("mpoisson","mnb"))
+names(x)<-"model"
+cLRT<-cbind(x,LRT)
+cLRT %>%
+  kbl() %>%
+  kable_styling()
+#write_xlsx(LRT,"C:\\Users\\ssrivas\\Desktop\\Apurv\\UC Davis\\UC Davis Courses\\Spring Quarter 2021\\STA 260\\Midterm Project\\cleaned SAS data\\LRT.xlsx")
+```
+
+## Confidence intervals for esitmates
+```{r}
+Estimate = coef(mfinal)
+Conf<-confint(mfinal)
+esty<-cbind(exp(Estimate),exp(Conf))
+esty
+```
+
+
+### Pearson Residuals
+```{r}
+plot(density(rstandard(mfinal,type="pearson")), xlim=c(-1,5), ylim=c(-1,100))
+lines(density(rstandard(mpoisson, type = "pearson")),col="red")
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+library(gridExtra)
+
+colnames(tabage$t)<-c("0-49","50-59","60-69","70-79","80+")
+rownames(tabage$t)<-c("Survived","Deceased")
+tabage1<-tableGrob(tabage$t)
+
+plotage<-ggplot(cdc_subset, aes(x = age_cat, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("age categories (years)") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Age (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabage1, xmin=2, xmax=3, ymin=150000, ymax=200000) +
+   scale_x_continuous(breaks=0:4,labels=c("0-49","50-59","60-69","70-79","80+"))
+plotage
+
+colnames(tabsob$t)<-c("No","Yes")
+rownames(tabsob$t)<-c("Survived","Deceased")
+tabsob1<-tableGrob(tabsob$t)
+
+plotsob<-ggplot(cdc_subset, aes(x = symsob, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Shortness of Breath") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by SOB (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabsob1, xmin=0.5, xmax=1.5, ymin=150000, ymax=250000)+
+   scale_x_continuous(breaks=0:1,labels=c("No","Yes"))
+plotsob
+
+
+colnames(tabsex$t)<-c("Male","Female")
+rownames(tabsex$t)<-c("Survived","Deceased")
+tabsex1<-tableGrob(tabsex$t)
+plotsex<-ggplot(cdc_subset, aes(x = Sex_n, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Sex") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Sex (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabsex1, xmin=0.5, xmax=1.5, ymin=175000, ymax=200000)+
+  scale_x_continuous(breaks=1:2,labels=c("Male","Female"))
+plotsex
+
+colnames(tabrace$t)<-c("White","Black","Hispanic/Latino","Other")
+rownames(tabrace$t)<-c("Survived","Deceased")
+tabrace1<-tableGrob(tabrace$t)
+
+plotrace<-ggplot(cdc_subset, aes(x = race, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Race") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Race (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabrace1, xmin=2, xmax=4, ymin=100000, ymax=150000)+
+  scale_x_continuous(breaks=1:4,labels=c("White","Black","Hispanic/Latino","Other"))
+plotrace
+
+colnames(tabreg$t)<-c("NE","MW","S","W","T")
+rownames(tabreg$t)<-c("Survived","Deceased")
+tabreg1<-tableGrob(tabreg$t)
+plotreg<-ggplot(cdc_subset, aes(x = state, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Region") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Region (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabreg1, xmin=3, xmax=5, ymin=125000, ymax=200000)+
+  scale_x_continuous(breaks=1:5,labels=c("Northeast","Midwest","South","West","Territories"))
+plotreg
+
+colnames(tabstatus$t)<-c("Probabale","Lab Confirmed")
+rownames(tabstatus$t)<-c("Survived","Deceased")
+tabstatus1<-tableGrob(tabstatus$t)
+plotstatus<-ggplot(cdc_subset, aes(x = status, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Status of Case") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Status (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabstatus1, xmin=-0.5, xmax=0.5, ymin=175000, ymax=275000)+
+  scale_x_continuous(breaks=0:1,labels=c("No","Yes"))
+plotstatus
+
+colnames(tababxchest$t)<-c("No","Yes")
+rownames(tababxchest$t)<-c("Survived","Deceased")
+tababxchest1<-tableGrob(tababxchest$t)
+plotabxchest<-ggplot(cdc_subset, aes(x = abxchest, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("abnormal chest x rays") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by ABnormal Chest X-rays (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tababxchest1, xmin=0.5, xmax=1.5, ymin=175000, ymax=275000)+
+  scale_x_continuous(breaks=0:1,labels=c("No","Yes"))
+plotabxchest
+
+colnames(tabard$t)<-c("No","Yes")
+rownames(tabard$t)<-c("Survived","Deceased")
+tabard1<-tableGrob(tabard$t)
+plotard<-ggplot(cdc_subset, aes(x = acuterespdistress, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("acute respiratory distress") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Acute Respiratory Distress (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabard1, xmin=0.5, xmax=1.5, ymin=175000, ymax=275000)+
+  scale_x_continuous(breaks=0:1,labels=c("No","Yes"))
+plotard
+
+colnames(tabicu$t)<-c("No","Yes")
+rownames(tabicu$t)<-c("Survived","Deceased")
+tabicu1<-tableGrob(tabicu$t)
+ploticu<-ggplot(cdc_subset, aes(x = icu, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Intensive Care") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by ICU (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabicu1, xmin=0.5, xmax=1.5, ymin=175000, ymax=250000)+
+  scale_x_continuous(breaks=0:1,labels=c("No","Yes"))
+ploticu
+
+colnames(tabmv$t)<-c("No","Yes")
+rownames(tabmv$t)<-c("Survived","Deceased")
+tabmv1<-tableGrob(tabmv$t)
+plotmv<-ggplot(cdc_subset, aes(x = mechvent, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Ventilator") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Ventilator (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabmv1, xmin=0.5, xmax=1.5, ymin=175000, ymax=200000)+
+  scale_x_continuous(breaks=0:1,labels=c("No","Yes"))
+plotmv
+
+colnames(tabmc$t)<-c("No","Yes")
+rownames(tabmc$t)<-c("Survived","Deceased")
+tabmc1<-tableGrob(tabmc$t)
+plotmc<-ggplot(cdc_subset, aes(x = medcond, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Medical COndition") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Prior Medical Condition (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabmc1, xmin=0.5, xmax=1.5, ymin=150000, ymax=250000)+
+  scale_x_continuous(breaks=0:1,labels=c("No","Yes"))
+plotmc
+
+colnames(tabpna$t)<-c("No","Yes")
+rownames(tabpna$t)<-c("Survived","Deceased")
+tabpna1<-tableGrob(tabpna$t)
+plotpna<-ggplot(cdc_subset, aes(x = pna, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Pneumonia") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Pneumonia (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabpna1, xmin=0.5, xmax=1.5, ymin=175000, ymax=250000)+
+  scale_x_continuous(breaks=0:1,labels=c("No","Yes"))
+plotpna
+
+colnames(tabsymany$t)<-c("No","Yes")
+rownames(tabsymany$t)<-c("Survived","Deceased")
+tabsymany1<-tableGrob(tabsymany$t)
+plotsymany<-ggplot(cdc_subset, aes(x = sym_any, fill = as.factor(death))) + 
+  geom_bar(position = position_stack(reverse=TRUE)) +
+  xlab("Presence of Symptoms") +
+  ylab("Observations") +
+  ggtitle("Observations grouped by Presence of symptoms (p<.0001)")+
+  guides(fill = FALSE)  +
+  scale_fill_manual(values = c("Light Blue","Red"))+
+  annotation_custom(tabsymany1, xmin=-0.5, xmax=0.5, ymin=175000, ymax=250000)+
+  scale_x_continuous(breaks=0:1,labels=c("No","Yes"))
+plotsymany
+```
+
+
+```{r}
+
+library(forestmodel)
+forest_model(mfinal, format_options = forest_model_format_options(color = "red", shape = 15, banded = TRUE) )
+```
+
+```{r}
+
+esty<-cbind(exp(summ.mfinal$coefficients[,1]),exp(confint(mfinal)))
+esty<-esty[-1,]
+
+
+
+
+```
+
+```{r}
+library(forestplot)
+library(kableExtra)
+
+IRR<-c(2.60,1.74,0.81,1.02,1.34,1.19,0.86,1.25,3.52,2.82,2.04,1.44,0.69,1.00)
+LL<- c(2.53,1.63,0.76,0.98,1.18,1.15,0.78,1.14,3.22,2.56,1.89,1.30,0.62,1.00)
+UL<- c(2.65,1.85,0.85,1.05,1.52,1.23,0.97,1.38,3.84,3.11,2.19,1.60,0.76,1.00)
+
+esty1<-cbind(IRR,LL,UL)
+
+fp<-forestplot(esty, is.summary = c(TRUE,TRUE,rep(FALSE,8),TRUE),
+           clip = c(0.1,2.5), 
+           xlog = TRUE, 
+           col = fpColors(box = "royalblue",
+                          line = "darkblue",
+                          summary = "royalblue"))
+
+esty %>%
+  kbl() %>%
+  kable_styling()
+  
+
+```
+
+
+
+```{r}
+library(animation)
+saveGIF(
+  expr = {
+    plot(plotage)
+    plot(plotsob)
+    plot(plotsex)
+    plot(plotrace)
+    plot(plotreg)
+    plot(plotstatus)
+    plot(plotabxchest)
+    plot(plotard)
+    plot(ploticu)
+    plot(plotmv)
+    plot(plotmc)
+    plot(plotpna)
+    plot(plotsymany)
+  },
+  movie.name = "barplot.gif"
+)
+```
+
+```{r}
+
+summ.mfinal$coefficients %>%
+  kbl() %>%
+  kable_styling()
+  
+```
+
